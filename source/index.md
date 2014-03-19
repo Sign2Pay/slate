@@ -309,7 +309,7 @@ Error Code | Meaning
 405 | Method Not Allowed
 406 | Not Acceptable
 500 | Internal Server Error -- We had a problem with our server. Try again later.
-503 | Service Unavailable -- We're temporarially offline for maintenance. Please try again later.
+503 | Service Unavailable -- We're temporarily offline for maintenance. Please try again later.
 
 <aside class="warning">
   The error section of this document is still in the works and should be considered incomplete. If you are having any trouble, <a href='mailto:nicolas@sign2pay.com'>let us know</a>!
