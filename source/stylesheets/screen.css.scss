@@ -54,7 +54,8 @@ html, body {
   // This is the logo at the top of the ToC
   &>img {
     display: block;
-    margin-bottom: $logo-margin;
+    margin: $logo-margin 0 $logo-margin 20px;
+    width:80%;
   }
 
   .tocify-item>a, .toc-footer li {
