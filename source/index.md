@@ -73,9 +73,230 @@ Check <a href='#the-postback'>Postback</a> for full details.
 
 If your application is in test mode, no payments will be processed associated with this application token. The Risk Assessment and Signature verification will however function as normal.
 
+# Sign2Pay iOS Library
+
+The Sign2Pay iOS SDK simplifies 3 tasks:
+
+1. authorize access and usage to the Sign 2 Pay API service
+2. running [risk assessments](#risk-assessment)
+3. present the Sign 2 Pay overlay to kick of the payment process
+
 <aside class="notice">
-  *S2P iOS Library Documentation Pending.
+  We are supporting iOS 7 and up.
 </aside>
+
+## Installation
+> Targets > Your App > Build Phases > Link Binary With Libraries.
+
+Download our library and include it in Link Binary With Libraries.
+
+## Usage
+
+```objc
+S2PSDK
+======
+
+@interface S2PSDK : NSObject
+
+- (id)   init:(S2PConfiguration *)configuration;
+- (void) assessRiskForTransaction:(S2PTransaction *)transaction withCompletion:(void (^)(S2PResponse *response, NSError *error))completion;
+- (void) sign2payFromViewController:(UIViewController *)presentingViewController;
+
+@end
+
+```
+
+The `S2PSDK` class provides 3 important public methods.
+Each method corresponds to a step in the Sign 2 Pay flow.
+
+Authorize  | Risk Assessment | Payment
+------------- | --------------- | -------
+init:         | assessRiskForTransaction:error:  | sign2payFromViewController:
+
+Your app should not show the Sign 2 Pay button until the SDK returns a valid risk assessment.
+This means you will run at least one succesfull risk assessment and evaluate it's
+response type.  If the response type allows a Sign 2 Pay payment you can show the relevant button.
+
+### There are a couple of helper classes that are important:
+
+```objc
+S2PConfiguration
+================
+
+@interface S2PConfiguration : NSObject
+
+@property (nonatomic, copy) NSString *merchantId;
+@property (nonatomic, copy) NSString *implementationURL;
+@property (nonatomic, copy) NSString *applicationToken;
+
+- (id) initWithMerchantId:(NSString *)merchantId implementationURL:(NSString *)referalURL applicationToken:(NSString *)applicationToken;
+
+@end
+```
+
+* `S2PConfiguration`:<br>helps you setting up your credentials with `[S2PSDK init:]`.
+
+```objc
+S2PTransaction
+==============
+
+@interface S2PTransaction : NSObject
+
+NSString *firstName;
+NSString *lastName;
+NSString *email;        // for transactional emails
+NSString *address;
+NSString *postalCode;
+NSString *city;
+NSString *region;
+NSString *country;      // iso code
+NSNumber *amount;       // in cents, no points or other delimeters
+NSString *referenceId;  // your shopping cart reference
+
+// init an S2PTransaction with a provided camelCased dict and error
++ (instancetype) transactionWithDictionary:(NSDictionary *)dictionary error:(NSError * __autoreleasing *)error;
+
+@end
+
+```
+
+```objc
+S2PResponseType
+===============
+
+// the possible values of an S2PResponse type property
+
+typedef NS_ENUM(NSInteger, S2PResponseType){
+    S2PResponseTypeNil,
+    S2PResponseTypeDenied,
+    S2PResponseTypeFailure,
+    S2PResponseTypeAllowed,
+    S2PResponseTypeExpand,
+    S2PResponseTypeProcessing,
+    S2PResponseTypeRedirect,
+    S2PResponseTypeCount
+};
+```
+
+* `S2PTransaction`: <br>
+used in combination with `[S2PSDK assessRiskForTransaction:error:]`
+
+
+
+### Authorization
+
+```objc
+// init the sdk in e.g. your app delegate
+
+#import "S2PSDK.h"
+
+- (void) setupSign2Pay
+{
+    S2PConfiguration *configuration;
+
+    // Replace the values with your personal credentials.
+    // You can find them in your dashboard.
+
+    NSString *merchantId        = @"e87654b84e6963064d000000";
+    NSString *implementationURL = @"http://my.eshopexperience.com/checkout";
+    NSString *token             = @"67ewbc135370611247020000";
+
+    configuration = [[S2PConfiguration alloc] initWithMerchantId: merchantId
+                                               implementationURL: implementationURL
+                                                applicationToken: token ];
+
+    sign2pay = [[S2PSDK alloc] init:configuration];
+}
+```
+
+Your app needs authorization in order to use Sign 2 Pay's risk assessment service
+and payments later on.
+
+The SDK provides a `S2PConfiguration` class to make this process as easy as possible.
+Initialize an instance of `S2PConfiguration` with your personal credentials.
+
+`[S2PSDK init:]` does not trigger a web request.<br>
+It just sets the necessary information on the `S2PSDK` instance.
+
+
+### Risk Assessments
+
+```objc
+/*
+
+S2PTransaction
+---------------
+example usage:
+
+create a transaction object with the information collected
+from the current user
+
+*/
+
+NSError *transactionError = nil;
+
+// no network request is made at this point
+S2PTransaction *transaction = [S2PTransaction transactionWithDictionary:self.formDictionary error:&transactionError];
+
+if( transactionError )
+{
+  // handle error
+  // at this point you'll get a hardcoded error stating the email address was not provided
+  // better error messages are in the making
+}
+
+```
+
+You should trigger a risk assesment any time you can provide the API with an updated, valid form.
+The assessment runs on a background thread and should not block your UI.
+You need an instance of `S2PSDK` and an instance of `S2PTransaction` in order to trigger an assessment.
+
+You can pass in a valid `S2PTransaction` when using `S2PSDK`'s `assessRiskForTransaction:withCompletion` method.
+You can create an instance of a transaction by providing an `NSDictionary`
+that holds appropriately named keys with their values to the `transactionWithDictionary:error:` method.
+
+* firstName
+* lastName
+* email
+* address
+* postalCode
+* city
+* region
+* country
+* amoun
+* referenceId
+
+`S2PTransaction *transaction =
+[S2PTransaction transactionWithDictionary:self.formDictionary error:&transactionError];`
+
+`[[s2pSDK assessRiskForTransaction:transaction withCompletion:^(S2PResponse *response, NSError *error) { ... }];`
+
+You can evaluate `response.type` inside that completion block.
+
+These are the possible response types:
+`S2PResponseTypeNil,S2PResponseTypeDenied,S2PResponseTypeFailure,S2PResponseTypeProcessing,S2PResponseTypeRedirect,S2PResponseTypeCount`
+
+
+### Sign 2 Pay overlay
+
+Once the risk assessment allows the use of Sign 2 Pay as payment provider you can present your own custom "Pay with Sign2Pay" button.
+When the user clicks the button the SDK can present the Sign 2 Pay overlay which will take care of the payment process.
+
+`[s2pSDK sign2payFromViewController:self];`
+
+You can listen for notifications in order to anticipate the closing of the Sign 2 Pay viewcontroller.
+The SDK provides access to `const` values to minimize typos:
+- `kS2PWillCloseS2PPaymentViewController`
+- `kS2PDidCloseS2PPaymentViewController`
+
+When one of these notifications comes in, the `object` property
+contains a `S2PResponseType` value.
+
+If the value is equal to `S2PResponseTypeRedirect` the payment was successful.
+In all other cases the payment was not successful.
+
+The possible values of the other `S2PResponseType`s you can receive should be self explanatory.
+
 
 # Sign2Pay.js
 
