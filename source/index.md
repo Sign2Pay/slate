@@ -37,7 +37,7 @@ Currently, the Merchant Intake is a manual process. This gives us a chance to ge
 
 ### Merchant ID
 
-Your Merchant ID is the id of your S2P account and is required for integration of the sign2pay.js. This will be supplied to you as soon as you are setup. As S2P is backed by MongoDB, this is a simple alpha-numeric Mongo _id string.
+Your Merchant ID is the id of your S2P account and is required for integration of the sign2pay.js. This will be supplied to you as soon as you are setup.
 
 ### Token
 
