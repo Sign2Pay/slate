@@ -30,10 +30,59 @@ Once this step has passed validation and the official SEPA mandate has been crea
 ## Redirect
 The user is then redirected to the URL of your choice along with any parameters your site needs to finalize your process.
 
+# Merchant API (BETA)
+
+Currently, the Merchant Intake is a manual process. This gives us a chance to get to know you and make sure you are getting the best support possible. Once this process is complete, we'll create your S2P account, and an initial Sign2Pay Merchant App.
+
+We are testing a Merchant API which will allow you to register a merchant via JSON. After the creation, a confirmation email will be sent and the rest of the merchang on-boarding happens in the Sign2Pay environment.
+
+## Create a merchant
+
+```shell
+curl "https://sign2pay.com/api/v2/merchants.json" \
+  -H "Content-Type: application/json" \
+  -d "{\"merchant\":{\"email\":\"widgets-inc@example.com\",\"name\":\"Widgets, Inc\"}}"
+```
+
+> The result is a merchant in JSON format.
+
+<aside class="notice">
+Access to this resource is rate limited per remote IP.
+</aside>
+
+### Attributes
+
+Attribute        | Required | Description         | Default
+-----------------|----------|---------------------|--------
+name             | yes      | legal business name |
+email            | yes      | email address       |
+enabled          | no       | boolean             | true
+process_payments | no       | boolean             | true
+website          | no       |                     |
+description      | no       |                     |
+logo             | no       | image file as a [Data URI](http://en.wikipedia.org/wiki/Data_URI_scheme) |
+
+## Applications
+
+```shell
+curl "https://sign2pay.com/api/v2/merchants.json" \
+  -H "Content-Type: application/json" \
+  -d "{\"merchant\":{\"email\":\"widgets-inc@example.com\",\"name\":\"Widgets, Inc\"}}"
+```
+
+You are encouraged to create one or more application per merchant directly in the merchant create method.
+Provide a separate application for each storefront. Every application must have it's own implementation and postback URL.
+
+Attribute          | Required | Description
+-------------------|----------|------------------------------------------
+name               | yes      | storefront name
+implementation_url | yes      | URL where the requests will originate
+postback_url       | no       | URL where S2P should post payment details
+mode               | no       | test or production, defaults to test
 
 # Applications
 
-Currently, the Merchant Intake is a manual process. This gives us a chance to get to know you and make sure you are getting the best support possible. Once this process is complete, we'll create your S2P account, and an initial Sign2Pay Merchant App.
+As a merchant, you can add many applications to your S2P account. Each storefront will be a separate application.
 
 ### Merchant ID
 
