@@ -39,9 +39,15 @@ We are testing a Merchant API which will allow you to register a merchant via JS
 ## Create a merchant
 
 ```shell
+# create a merchant
 curl "https://sign2pay.com/api/v2/merchants.json" \
   -H "Content-Type: application/json" \
   -d "{\"merchant\":{\"email\":\"widgets-inc@example.com\",\"name\":\"Widgets, Inc\"}}"
+
+# with two embedded applications (storefronts)
+curl "https://sign2pay.com/api/v2/merchants.json" \
+  -H "Content-Type: application/json" \
+  -d "{\"merchant\":{\"name\":\"Powlowski, Weissnat and Hayes\",\"email\":\"kennedi@funk.org\",\"applications\":[{\"name\":\"Hoppe, Shields and Stark\",\"implementation_url\":\"http://schmittkulas.com/valerie\",\"postback_url\":\"http://schustermorar.net/myra.fadel\"},{\"name\":\"Metz-Goldner\",\"implementation_url\":\"http://stanton.name/yvette.pagac\",\"postback_url\":\"http://wiegandprosacco.name/mabel\"}]}}"
 ```
 
 > The result is a merchant in JSON format.
