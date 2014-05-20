@@ -32,6 +32,36 @@ The user is then redirected to the URL of your choice along with any parameters 
 
 # Merchant API (BETA)
 
+```javascript
+{
+   "merchant":{
+      "id":"537b4de741697252c2030000",
+      "name":"Powlowski, Weissnat and Hayes",
+      "email":"powlowski-weissnat-hayes@example.com",
+      "applications":[
+         {
+            "id":"537b4de741697252c2040000",
+            "name":"Hoppe, Shields and Stark",
+            "implementation_url":"http://schmittkulas.com/valerie",
+            "postback_url":"http://schustermorar.net/myra.fadel",
+            "mode":"test",
+            "created_at":"2014-05-20T12:43:19.881Z",
+            "updated_at":"2014-05-20T12:43:19.881Z"
+         },
+         {
+            "id":"537b4de741697252c2050000",
+            "name":"Metz-Goldner",
+            "implementation_url":"http://stanton.name/yvette.pagac",
+            "postback_url":"http://wiegandprosacco.name/mabel",
+            "mode":"test",
+            "created_at":"2014-05-20T12:43:19.885Z",
+            "updated_at":"2014-05-20T12:43:19.885Z"
+         }
+      ]
+   }
+}
+```
+
 Currently, the Merchant Intake is a manual process. This gives us a chance to get to know you and make sure you are getting the best support possible. Once this process is complete, we'll create your S2P account, and an initial Sign2Pay Merchant App.
 
 We are testing a Merchant API which will allow you to register a merchant via JSON. After the creation, a confirmation email will be sent and the rest of the merchang on-boarding happens in the Sign2Pay environment.
