@@ -35,9 +35,9 @@ The user is then redirected to the URL of your choice along with any parameters 
 ```javascript
 {
    "merchant":{
-      "id":"537b4de741697252c2030000",
-      "name":"Powlowski, Weissnat and Hayes",
-      "email":"powlowski-weissnat-hayes@example.com",
+      "id":"537ba23a416972867f000000",
+      "name":"Ruecker-Medhurst",
+      "email":"lamar@herman.name",
       "applications":[
          {
             "id":"537b4de741697252c2040000",
@@ -57,6 +57,12 @@ The user is then redirected to the URL of your choice along with any parameters 
             "created_at":"2014-05-20T12:43:19.885Z",
             "updated_at":"2014-05-20T12:43:19.885Z"
          }
+      ],
+      "api_tokens":[
+         {
+            "token":"726599a60f2d990bbac4c065ac48371e",
+            "created_at":"2014-05-20T18:43:06.755Z"
+         }
       ]
    }
 }
@@ -65,6 +71,12 @@ The user is then redirected to the URL of your choice along with any parameters 
 Currently, the Merchant Intake is a manual process. This gives us a chance to get to know you and make sure you are getting the best support possible. Once this process is complete, we'll create your S2P account, and an initial Sign2Pay Merchant App.
 
 We are testing a Merchant API which will allow you to register a merchant via JSON. After the creation, a confirmation email will be sent and the rest of the merchang on-boarding happens in the Sign2Pay environment.
+
+The merchant profile JSON is shown on the right.
+
+<aside class="notice">
+Access to the API is rate limited per remote IP.
+</aside>
 
 ## Create a merchant
 
@@ -80,11 +92,10 @@ curl "https://sign2pay.com/api/v2/merchants.json" \
   -d "{\"merchant\":{\"name\":\"Powlowski, Weissnat and Hayes\",\"email\":\"kennedi@funk.org\",\"applications\":[{\"name\":\"Hoppe, Shields and Stark\",\"implementation_url\":\"http://schmittkulas.com/valerie\",\"postback_url\":\"http://schustermorar.net/myra.fadel\"},{\"name\":\"Metz-Goldner\",\"implementation_url\":\"http://stanton.name/yvette.pagac\",\"postback_url\":\"http://wiegandprosacco.name/mabel\"}]}}"
 ```
 
-> The result is a merchant in JSON format.
+> The response is a [Merchant](/#merchant-api-(beta))
 
-<aside class="notice">
-Access to this resource is rate limited per remote IP.
-</aside>
+Name and email are required fields. Optionally you can include applications to be created. Every purchase must be made through one application (aka storefront). Merchants can have separate applications in test and production mode.
+
 
 ### Attributes
 
@@ -98,12 +109,22 @@ website          | no       |                     |
 description      | no       |                     |
 logo             | no       | image file as a [Data URI](http://en.wikipedia.org/wiki/Data_URI_scheme) |
 
+### Response codes
+
+Code | Description
+-----|------------
+201  | Merchant created
+400  | Missing or malformed input fields
+403  | Validation error(s)
+429  | Rate limited: enhance your calm
+
 ## Applications
 
 ```shell
-curl "https://sign2pay.com/api/v2/merchants.json" \
+curl "https://sign2pay.com/api/v2/applications.json" \
+  -H "Authorization: Token 0047f40cf37dbb5cc6301d17194ed2e2" \
   -H "Content-Type: application/json" \
-  -d "{\"merchant\":{\"email\":\"widgets-inc@example.com\",\"name\":\"Widgets, Inc\"}}"
+  -d "{\"application\":{\"name\":\"Hoppe, Shields and Stark\",\"implementation_url\":\"http://schmittkulas.com/valerie\",\"postback_url\":\"http://schustermorar.net/myra.fadel\"}}"
 ```
 
 You are encouraged to create one or more application per merchant directly in the merchant create method.
@@ -115,6 +136,32 @@ name               | yes      | storefront name
 implementation_url | yes      | URL where the requests will originate
 postback_url       | no       | URL where S2P should post payment details
 mode               | no       | test or production, defaults to test
+
+To create applications for an existing merchant, you must use Token authentication. After signup you will have
+received an API access token to authenticate with. It is important that this access token is kept strictly private. If it ever
+becomes compromised, you must revoke the old access token and generate a new one as soon as possible.
+
+Code | Description
+-----|------------
+201  | Application created
+400  | Missing or malformed input fields
+401  | Invalid authorization
+403  | Validation error(s)
+429  | Rate limited: enhance your calm
+
+<aside class="notice">
+Your API access token is separate from the Application Token you use for the integration with the Sign2Pay payment gateway.
+</aside>
+
+## Access tokens
+
+Sign2Pay uses tokens to allow access to the API. Access tokens are handed to every merchant directly after succesful registration. Store the tokens securely and pass one with every request. For protected resources, you must pass a valid token in a HTTP Token Authorization header.
+
+<code>Authorization: token 0047f40cf37dbb5cc6301d17194ed2e2</code>
+
+<aside class="notice">
+You must replace 0047f40cf37dbb5cc6301d17194ed2e2 with one of your tokens.
+</aside>
 
 # Applications
 
