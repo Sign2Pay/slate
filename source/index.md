@@ -122,7 +122,7 @@ Code | Description
 
 ```shell
 curl "https://sign2pay.com/api/v2/applications.json" \
-  -H "Authorization: Token 0047f40cf37dbb5cc6301d17194ed2e2" \
+  -H "Authorization: Token token=\"0047f40cf37dbb5cc6301d17194ed2e2\"" \
   -H "Content-Type: application/json" \
   -d "{\"application\":{\"name\":\"Hoppe, Shields and Stark\",\"implementation_url\":\"http://schmittkulas.com/valerie\",\"postback_url\":\"http://schustermorar.net/myra.fadel\"}}"
 ```
@@ -157,7 +157,7 @@ Your API access token is separate from the Application Token you use for the int
 
 Sign2Pay uses tokens to allow access to the API. Access tokens are handed to every merchant directly after succesful registration. Store the tokens securely and pass one with every request. For protected resources, you must pass a valid token in a HTTP Token Authorization header.
 
-<code>Authorization: token 0047f40cf37dbb5cc6301d17194ed2e2</code>
+<code>Authorization: Token token="0047f40cf37dbb5cc6301d17194ed2e2"</code>
 
 <aside class="notice">
 You must replace 0047f40cf37dbb5cc6301d17194ed2e2 with one of your tokens.
