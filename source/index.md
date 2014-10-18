@@ -2,13 +2,13 @@
 title: Sign2Pay Documentation
 
 toc_footers:
- - <a href='mailto:nicolas@sign2pay.com'>Get a Merchant App Setup</a>
+ - <a href='mailto:team@sign2pay.com'>Get a Merchant App Setup</a>
  - <a href='http://github.com/tripit/slate'>Documentation Powered by Slate</a>
 ---
 
 # Introduction
 
-Welcome to Sign2Pay! This should be seen as an organic document as we are still flushing out some of the details. If any of your questions aren't answered here, <a href='mailto:nicolas@sign2pay.com'>reach out</a> and we'll be happy to help!
+Welcome to Sign2Pay! This should be seen as an organic document as we are still flushing out some of the details. If any of your questions aren't answered here, <a href='mailto:dev@sign2pay.com'>reach out</a> and we'll be happy to help!
 
 # Integration Overview
 
@@ -607,7 +607,7 @@ If this is a returning consumer, we have a valid IBAN attached to their S2P acco
 
 The signature of a first time consumer is stored to their S2P account which will later need to be verified before being able to process any further transactions via Sign2Pay.
 
-For a returning consumer, their signature is compared to those we have on file across a 4 tier algorythm to determine it's authenticity. To find out more about the comparison and validation process, <a href='mailto:nicolas@sign2pay.com'>ask us</a>!
+For a returning consumer, their signature is compared to those we have on file across a 4 tier algorythm to determine it's authenticity. To find out more about the comparison and validation process, <a href='mailto:dev@sign2pay.com'>ask us</a>!
 
 # The Payment Postback
 
@@ -674,5 +674,5 @@ Error Code | Meaning
 503 | Service Unavailable -- We're temporarily offline for maintenance. Please try again later.
 
 <aside class="warning">
-  The error section of this document is still in the works and should be considered incomplete. If you are having any trouble, <a href='mailto:nicolas@sign2pay.com'>let us know</a>!
+  The error section of this document is still in the works and should be considered incomplete. If you are having any trouble, <a href='mailto:dev@sign2pay.com'>let us know</a>!
 </aside>
