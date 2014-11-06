@@ -464,7 +464,7 @@ There are a few ways to integrate Sign2Pay into your site/application. How your 
   (function() {
     var s = document.createElement("script");
     s.type = "text/javascript";
-    s.src = "//sign2pay.com/assets/merchant.js";
+    s.src = "//sign2pay.com/merchant.js";
     s.async = true;
     t = document.getElementsByTagName('script')[0];
     t.parentNode.insertBefore(s, t);
@@ -524,7 +524,7 @@ It should be noted that if any of the params are changed after a Risk Assessment
   (function() {
     var s = document.createElement("script");
     s.type = "text/javascript";
-    s.src = "//sign2pay.com/assets/merchant.js";
+    s.src = "//sign2pay.com/merchant.js";
     s.async = true;
     t = document.getElementsByTagName('script')[0];
     t.parentNode.insertBefore(s, t);
