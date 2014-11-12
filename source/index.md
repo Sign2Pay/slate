@@ -441,13 +441,12 @@ There are a few ways to integrate Sign2Pay into your site/application. How your 
 > This can be included anywhere in your page, just don't forget to wrap in a `<script>` tag.
 
 ```js
-
   window.sign2PayOptions = {
     merchant_id: 'e29550b84e6963064d000000',
     token: '52fa46da537061f622000000',
-    el : '#sign2pay',
+    el: '#sign2pay',
     checkout_type: 'single',
-    domain : "sign2pay.com",
+    domain: "sign2pay.com",
     map:{
       first_name: '#consumer_first_name',
       last_name: '#consumer_last_name',
@@ -457,7 +456,7 @@ There are a few ways to integrate Sign2Pay into your site/application. How your 
       city: '#consumer_city',
       region: '#consumer_region',
       country: '#consumer_country',
-      amount: #consumer_amount,
+      amount: '#consumer_amount',
       ref_id : '#order_id'
     }
   };
@@ -470,7 +469,6 @@ There are a few ways to integrate Sign2Pay into your site/application. How your 
     t = document.getElementsByTagName('script')[0];
     t.parentNode.insertBefore(s, t);
   })();
-
 ```
 
 > `amount` is provided as an integer reflecting __cents__.
