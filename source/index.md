@@ -409,14 +409,14 @@ These are the possible response types:
 `S2PResponseTypeNil,S2PResponseTypeDenied,S2PResponseTypeFailure,S2PResponseTypeProcessing,S2PResponseTypeRedirect,S2PResponseTypeCount`
 
 
-### Sign 2 Pay overlay
+### Sign2Pay overlay
 
-Once the risk assessment allows the use of Sign 2 Pay as payment provider you can present your own custom "Pay with Sign2Pay" button.
-When the user clicks the button the SDK can present the Sign 2 Pay overlay which will take care of the payment process.
+Once the risk assessment allows the use of Sign2Pay as payment provider you can present your own custom "Pay with Sign2Pay" button.
+When the user clicks the button the SDK can present the Sign2Pay overlay which will take care of the payment process.
 
 `[s2pSDK sign2payFromViewController:self];`
 
-You can listen for notifications in order to anticipate the closing of the Sign 2 Pay viewcontroller.
+You can listen for notifications in order to anticipate the closing of the Sign2Pay viewcontroller.
 The SDK provides access to `const` values to minimize typos:
 - `kS2PWillCloseS2PPaymentViewController`
 - `kS2PDidCloseS2PPaymentViewController`
@@ -445,6 +445,7 @@ There are a few ways to integrate Sign2Pay into your site/application. How your 
   window.sign2PayOptions = {
     merchant_id: 'e29550b84e6963064d000000',
     token: '52fa46da537061f622000000',
+    el : '#sign2pay',
     checkout_type: 'single',
     domain : "sign2pay.com",
     map:{
@@ -456,7 +457,7 @@ There are a few ways to integrate Sign2Pay into your site/application. How your 
       city: '#consumer_city',
       region: '#consumer_region',
       country: '#consumer_country',
-      amount: '#consumer_amount',
+      amount: #consumer_amount,
       ref_id : '#order_id'
     }
   };
@@ -472,7 +473,7 @@ There are a few ways to integrate Sign2Pay into your site/application. How your 
 
 ```
 
-> `amount` is provided as __cents__.
+> `amount` is provided as an integer reflecting __cents__.
 
 You'll use the Single Page integration if:
 
@@ -496,7 +497,7 @@ We continuously 'watch' your page using the map until the required params have b
 It should be noted that if any of the params are changed after a Risk Assessment has been run, a new one will be initiated using the new param value(s). Ie. if a user changes their email address or your site/application updates the amount based on shipping method, we'll kick off a new Risk Assessment.
 
 <aside class="warning">
-  `amount` should always be provided as __cents__.
+  `amount` should always be provided as an integer reflecting __cents__.
 </aside>
 
 ## Multi Page Checkout
@@ -507,6 +508,7 @@ It should be noted that if any of the params are changed after a Risk Assessment
   window.sign2PayOptions = {
     merchant_id: 'e29550b84e6963064d000000',
     token: '52fa46da537061f622000000',
+    el : '#sign2pay',
     checkout_type: 'multi',
     domain : "sign2pay.com",
     first_name: "<first_name>",
@@ -557,9 +559,10 @@ jQuery(document).ready(function($) {
         window.sign2PayOptions = {
           merchant_id: "e29550b84e6963064d000000",
           token: "52fa46da537061f622000000",
+          el : '#sign2pay',
           address: "Any Street 53",
           amount: 1780,
-          checkout_type: "single",
+          checkout_type: "multi",
           city: "Anytown",
           country: "BE",
           domain: "sign2pay.com",
